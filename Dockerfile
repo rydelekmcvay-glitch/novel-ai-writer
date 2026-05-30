@@ -21,25 +21,17 @@ RUN npm run build
 FROM node:20-alpine
 WORKDIR /app
 
-# Install production dependencies only
 COPY backend/package*.json ./
 COPY backend/prisma ./prisma/
 RUN npm install --omit=dev --frozen-lockfile && npx prisma generate
 
-# Copy compiled backend
 COPY --from=backend-builder /app/backend/dist ./dist/
-
-# Copy frontend build into backend/public
 COPY --from=frontend-builder /app/frontend/dist ./public/
 
-# Create data directory for SQLite
-RUN mkdir -p /data
-
 ENV NODE_ENV=production
-ENV PORT=3001
-ENV DATABASE_URL=file:/data/app.db
+ENV PORT=10000
 
-EXPOSE 3001
+EXPOSE 10000
 
-# Apply DB migrations then start
+# Push schema to DB then start server
 CMD ["sh", "-c", "npx prisma db push --skip-generate && node dist/index.js"]

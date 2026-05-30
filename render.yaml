@@ -8,10 +8,6 @@ services:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 3001
+        value: 10000
       - key: DATABASE_URL
-        value: file:/data/app.db
-    disk:
-      name: novel-data
-      mountPath: /data
-      sizeGB: 1
+        sync: false   # will be set manually in Render dashboard
