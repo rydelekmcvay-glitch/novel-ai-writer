@@ -1,0 +1,12 @@
+node_modules/
+*/node_modules/
+dist/
+*/dist/
+backend/public/
+frontend/dist/
+*.db
+*.db-journal
+.env
+.env.local
+.env.production
+backend/.env

@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 7%;
+    --card-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 38 92% 50%;
+    --primary: 38 92% 50%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 0 0% 98%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+}
+
+/* Tiptap editor styles */
+.ProseMirror {
+  outline: none;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1rem;
+  line-height: 1.9;
+  color: hsl(0 0% 90%);
+}
+
+.ProseMirror p {
+  margin-bottom: 1.1em;
+  text-indent: 2em;
+}
+
+.ProseMirror p:first-child {
+  text-indent: 2em;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  color: hsl(240 5% 35%);
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+  font-style: italic;
+  text-indent: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3 {
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 0.75em;
+  text-indent: 0;
+}
+
+.ProseMirror blockquote {
+  border-left: 3px solid hsl(38 92% 50% / 0.5);
+  padding-left: 1em;
+  color: hsl(240 5% 64.9%);
+  font-style: italic;
+  margin: 1em 0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(240 3.7% 25%);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(240 3.7% 35%);
+}
+
+/* Typing cursor */
+.typing-cursor::after {
+  content: '|';
+  animation: blink 1s step-end infinite;
+  color: hsl(38 92% 50%);
+  margin-left: 1px;
+}
+
+/* Smooth token streaming */
+.streaming-text {
+  white-space: pre-wrap;
+  word-break: break-word;
+}

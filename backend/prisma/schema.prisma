@@ -1,0 +1,112 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Settings {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Project {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  genre       String?
+  status      String   @default("active")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  knowledgeItems   KnowledgeItem[]
+  chapters         Chapter[]
+  foreshadowings   Foreshadowing[]
+  feedbacks        Feedback[]
+  contextSummaries ContextSummary[]
+}
+
+model KnowledgeItem {
+  id        String   @id @default(uuid())
+  projectId String
+  type      String
+  title     String
+  content   String
+  itemOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model Chapter {
+  id              String    @id @default(uuid())
+  projectId       String
+  number          Int
+  title           String
+  summary         String?
+  content         String?
+  status          String    @default("draft")
+  wordCount       Int       @default(0)
+  targetWordCount Int?
+  notes           String?
+  deletedAt       DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  project  Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  versions ChapterVersion[]
+}
+
+model ChapterVersion {
+  id        String   @id @default(uuid())
+  chapterId String
+  content   String
+  note      String?
+  createdAt DateTime @default(now())
+
+  chapter Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+}
+
+model Foreshadowing {
+  id          String   @id @default(uuid())
+  projectId   String
+  title       String
+  description String
+  plantedAt   String
+  resolvedAt  String?
+  status      String   @default("open")
+  priority    String   @default("medium")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model Feedback {
+  id        String   @id @default(uuid())
+  projectId String
+  chapterId String?
+  content   String
+  category  String?
+  applied   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model ContextSummary {
+  id          String   @id @default(uuid())
+  projectId   String
+  summary     String
+  fromChapter Int
+  toChapter   Int
+  createdAt   DateTime @default(now())
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
